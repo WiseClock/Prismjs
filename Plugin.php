@@ -4,7 +4,7 @@
  * 
  * @package Prismjs
  * @author WiseClock
- * @version 1.0.2
+ * @version 1.0.3
  * @dependence 14.10.10
  * @link http://wiseclock.ca
  */
@@ -12,8 +12,8 @@ class Prismjs_Plugin implements Typecho_Plugin_Interface
 {
     public static function activate()
     {
-        Typecho_Plugin::factory('Widget_Abstract_Contents')->content = array('Prismjs_Plugin', 'parse');
-        Typecho_Plugin::factory('Widget_Abstract_Comments')->content = array('Prismjs_Plugin', 'parse');
+        Typecho_Plugin::factory('Widget_Abstract_Contents')->contentEx = array('Prismjs_Plugin', 'parse');
+        Typecho_Plugin::factory('Widget_Abstract_Comments')->contentEx = array('Prismjs_Plugin', 'parse');
         Typecho_Plugin::factory('Widget_Archive')->header = array('Prismjs_Plugin', 'header');
         Typecho_Plugin::factory('Widget_Archive')->footer = array('Prismjs_Plugin', 'footer');
     }
@@ -55,8 +55,10 @@ class Prismjs_Plugin implements Typecho_Plugin_Interface
         echo '<script src="' . $jsUrl . '"></script>';
     }
 
-    public static function parse($text)
+    public static function parse($text, $widget, $lastResult)
     {
+        $text = empty($lastResult) ? $text : $lastResult;
+
         $text = preg_replace('/<code>(c#|py|yml|c\+\+|bat|as|js|markup|css|clike|javascript|actionscript|applescript|aspnet|bash|basic|batch|cpp|csharp|c|coffeescript|ruby|css-extras|go|groovy|java|latex|lua|markdown|objectivec|php|php-extras|powershell|python|sass|scss|sql|swift|yaml)\s/', '<code class="language-$1">', $text);
         $text = str_replace('language-c#', 'language-csharp', $text);
         $text = str_replace('language-yml', 'language-yaml', $text);
@@ -66,6 +68,7 @@ class Prismjs_Plugin implements Typecho_Plugin_Interface
         $text = str_replace('language-js', 'language-javascript', $text);
         $text = str_replace('language-py"', 'language-python"', $text);
         $text = str_replace('<code>', '<code class="language-unknown">', $text);
+
         return $text;
     }
 }
