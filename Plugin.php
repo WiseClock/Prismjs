@@ -4,7 +4,7 @@
  * 
  * @package Prismjs
  * @author WiseClock
- * @version 1.0.0
+ * @version 1.0.1
  * @dependence 14.10.10
  * @link http://wiseclock.ca
  */
@@ -57,7 +57,7 @@ class Prismjs_Plugin implements Typecho_Plugin_Interface
 
     public static function parse($text)
     {
-        $text = preg_replace('/<code>((c#)|(py)|(yml)|(c++)|(bat)|(as)|(js)|(markup)|(css)|(clike)|(javascript)|(actionscript)|(applescript)|(aspnet)|(bash)|(basic)|(batch)|(c)|(csharp)|(cpp)|(coffeescript)|(ruby)|(css-extras)|(go)|(groovy)|(java)|(latex)|(lua)|(markdown)|(objectivec)|(php)|(php-extras)|(powershell)|(python)|(sass)|(scss)|(sql)|(swift)|(yaml))\s/', '<code class="language-$1">', $text);
+        $text = preg_replace('/<code>(c#|py|yml|c\+\+|bat|as|js|markup|css|clike|javascript|actionscript|applescript|aspnet|bash|basic|batch|cpp|csharp|c|coffeescript|ruby|css-extras|go|groovy|java|latex|lua|markdown|objectivec|php|php-extras|powershell|python|sass|scss|sql|swift|yaml)\s/', '<code class="language-$1">', $text);
         $text = str_replace('language-c#', 'language-csharp', $text);
         $text = str_replace('language-yml', 'language-yaml', $text);
         $text = str_replace('language-bat', 'language-batch', $text);
