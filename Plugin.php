@@ -4,7 +4,7 @@
  * 
  * @package Prismjs
  * @author WiseClock
- * @version 1.0.3
+ * @version 1.0.4
  * @dependence 14.10.10
  * @link http://wiseclock.ca
  */
@@ -23,6 +23,10 @@ class Prismjs_Plugin implements Typecho_Plugin_Interface
 
     public static function config(Typecho_Widget_Helper_Form $form)
     {
+        $help = new Typecho_Widget_Helper_Layout('div', array('style' => 'color: #999; background-color: #eee; border-radius: 10px; padding: 10px;'));
+        $help->html("<strong>使用方法</strong><pre><small>```c#\nConsole.Write(\"Hello World!\");\n```\n或行内代码\n`js console.log(\"Hi!\");`</small></pre>");
+        $form->addItem($help);
+
         $themes = array_map('basename', glob(dirname(__FILE__) . '/themes/*.css'));
         $themes = array_combine($themes, $themes);
         $theme = new Typecho_Widget_Helper_Form_Element_Select('theme', $themes, 'prism-coy.css', _t('代码样式'));
@@ -59,7 +63,8 @@ class Prismjs_Plugin implements Typecho_Plugin_Interface
     {
         $text = empty($lastResult) ? $text : $lastResult;
 
-        $text = preg_replace('/<code>(c#|py|yml|c\+\+|bat|as|js|markup|css|clike|javascript|actionscript|applescript|aspnet|bash|basic|batch|cpp|csharp|c|coffeescript|ruby|css-extras|go|groovy|java|latex|lua|markdown|objectivec|php|php-extras|powershell|python|sass|scss|sql|swift|yaml)\s/', '<code class="language-$1">', $text);
+        $text = preg_replace('/<code>(c#|py|yml|c\+\+|bat|as|js|markup|css|clike|javascript|actionscript|applescript|aspnet|bash|basic|batch|cpp|csharp|c|coffeescript|ruby|css-extras|go|groovy|java|latex|lua|markdown|objectivec|php|php-extras|powershell|python|sass|scss|sql|swift|yaml)\s/i', '<code class="language-$1">', $text);
+        $text = preg_replace_callback('/<code class="language-([^"]+)">/i', function($m) { return '<code class="language-' . strtolower($m[1]) . '">'; }, $text);
         $text = str_replace('language-c#', 'language-csharp', $text);
         $text = str_replace('language-yml', 'language-yaml', $text);
         $text = str_replace('language-bat"', 'language-batch"', $text);
