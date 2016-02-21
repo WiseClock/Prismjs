@@ -1,0 +1,4 @@
+pre[class*="language-"] code
+{
+    white-space: pre-wrap;
+}

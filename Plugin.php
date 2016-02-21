@@ -4,7 +4,7 @@
  * 
  * @package Prismjs
  * @author WiseClock
- * @version 1.0.4
+ * @version 1.0.5
  * @dependence 14.10.10
  * @link http://wiseclock.ca
  */
@@ -35,6 +35,9 @@ class Prismjs_Plugin implements Typecho_Plugin_Interface
         $showLineNumber = new Typecho_Widget_Helper_Form_Element_Checkbox('showln', array('showln' => _t('显示行号')), array('showln'), _t('是否在大段代码左侧显示行号'));
         $form->addInput($showLineNumber);
 
+        $forceWrap = new Typecho_Widget_Helper_Form_Element_Checkbox('forceWrap', array('forceWrap' => _t('强制换行')), array('forceWrap'), _t('是否强制换行'));
+        $form->addInput($forceWrap);
+
         $showLang = new Typecho_Widget_Helper_Form_Element_Checkbox('showlang', array('showlang' => _t('显示语言标签')), array('showlang'), _t('是否在大段代码右上角显示语言'));
         $form->addInput($showLang);
     }
@@ -45,10 +48,24 @@ class Prismjs_Plugin implements Typecho_Plugin_Interface
         echo '<link href="' . $themeUrl . '" rel="stylesheet" />';
         if (!Helper::options()->plugin('Prismjs')->showlang)
             echo "<style>.prism-show-language{display:none}</style>";
+        if (Helper::options()->plugin('Prismjs')->forceWrap)
+            echo '<link href="' . Helper::options()->pluginUrl . '/Prismjs/wrap-fix.css' . '" rel="stylesheet" />';
     }
 
     public static function footer()
     {
+        if (Helper::options()->plugin('Prismjs')->forceWrap && Helper::options()->plugin('Prismjs')->showln)
+        {
+            echo "<script>
+if(!window.jQuery)
+{
+   var script = document.createElement('script');
+   script.type = \"text/javascript\";
+   script.src = \"" . Helper::options()->pluginUrl . '/Prismjs/jquery-2.2.0.min.js' . "\";
+   document.getElementsByTagName('head')[0].appendChild(script);
+}
+</script>";
+        }
         if (Helper::options()->plugin('Prismjs')->showln)
             echo "<script>var pres = document.getElementsByTagName('pre');
                 for (var i = 0; i < pres.length; i++)
@@ -57,6 +74,8 @@ class Prismjs_Plugin implements Typecho_Plugin_Interface
                 </script>";
         $jsUrl = Helper::options()->pluginUrl . '/Prismjs/prism.js';
         echo '<script src="' . $jsUrl . '"></script>';
+        if (Helper::options()->plugin('Prismjs')->forceWrap && Helper::options()->plugin('Prismjs')->showln)
+            echo '<script defer="defer" src="' . Helper::options()->pluginUrl . '/Prismjs/line-number-wrap-fix.js' . '"></script>';
     }
 
     public static function parse($text, $widget, $lastResult)
