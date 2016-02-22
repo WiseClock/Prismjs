@@ -4,7 +4,7 @@
  * 
  * @package Prismjs
  * @author WiseClock
- * @version 1.0.5
+ * @version 1.0.6
  * @dependence 14.10.10
  * @link http://wiseclock.ca
  */
@@ -54,18 +54,6 @@ class Prismjs_Plugin implements Typecho_Plugin_Interface
 
     public static function footer()
     {
-        if (Helper::options()->plugin('Prismjs')->forceWrap && Helper::options()->plugin('Prismjs')->showln)
-        {
-            echo "<script>
-if(!window.jQuery)
-{
-   var script = document.createElement('script');
-   script.type = \"text/javascript\";
-   script.src = \"" . Helper::options()->pluginUrl . '/Prismjs/jquery-2.2.0.min.js' . "\";
-   document.getElementsByTagName('head')[0].appendChild(script);
-}
-</script>";
-        }
         if (Helper::options()->plugin('Prismjs')->showln)
             echo "<script>var pres = document.getElementsByTagName('pre');
                 for (var i = 0; i < pres.length; i++)

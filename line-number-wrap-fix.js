@@ -1,25 +1,32 @@
 function sizeLinebox(codebox)
 {
-    codebox.append('<div id="lnfix' + i + '"></div>');
-    var lnbox = codebox.children('.line-numbers-rows')[0];
-    var lnboxList = $(lnbox).children();
-    var lines = codebox.html().split('\n');
-    for (var j = 0; j < lines.length - 2; j++)
+    var lines = codebox.innerHTML.split('\n');
+    codebox.innerHTML = codebox.innerHTML + '<div id="lnfix"></div>';
+    var lnbox = codebox.getElementsByClassName('line-numbers-rows')[0];
+    var lnboxList = lnbox.children;
+    var lnfix = document.getElementById('lnfix');
+    for (var j = 0; j < lines.length - 1; j++)
     {
-        $('#lnfix' + i).html(lines[j]);
-        var lnheight = $('#lnfix' + i).height();
+        lnfix.innerHTML = lines[j];
+        var lnheight = lnfix.clientHeight;
         lnboxList[j].style.height = lnheight + 'px';
     };
-    $('#lnfix' + i).remove();
+    lnfix.remove();
 }
 
 function resizeBox()
 {
-    var codeArray = $('pre[class*="language-"] code');
-    for (var i = 0; i < codeArray.length; i++)
+    var pres = document.getElementsByTagName('pre');
+    for (var i = 0; i < pres.length; i++)
     {
-        var codeBox = codeArray[i];
-        sizeLinebox($(codeBox));
+        if (pres[i].className.indexOf('language-') > -1)
+        {
+            var codes = pres[i].getElementsByTagName('code');
+            for (var j = 0; j < codes.length; j++)
+            {
+                sizeLinebox(codes[j]);
+            };
+        }
     };
 }
 
@@ -34,6 +41,6 @@ Prism.hooks.add('complete', function (env)
     {
         for (var i = 0; i < Prism.hooks.all.complete.length - 1; i++)
             Prism.hooks.all.complete[i](env);
-        sizeLinebox($(env.element));
+        sizeLinebox(env.element);
     }
 });
