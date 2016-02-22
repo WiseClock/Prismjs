@@ -8,6 +8,8 @@ function sizeLinebox(codebox)
     for (var j = 0; j < lines.length - 1; j++)
     {
         lnfix.innerHTML = lines[j];
+        if (lnfix.innerText == '')
+            lnfix.innerHTML = ' ';
         var lnheight = lnfix.clientHeight;
         lnboxList[j].style.height = lnheight + 'px';
     };

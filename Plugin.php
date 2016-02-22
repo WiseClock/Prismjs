@@ -4,7 +4,7 @@
  * 
  * @package Prismjs
  * @author WiseClock
- * @version 1.0.6
+ * @version 1.0.6a
  * @dependence 14.10.10
  * @link http://wiseclock.ca
  */
