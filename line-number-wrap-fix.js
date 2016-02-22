@@ -13,7 +13,8 @@ function sizeLinebox(codebox)
         var lnheight = lnfix.clientHeight;
         lnboxList[j].style.height = lnheight + 'px';
     };
-    lnfix.remove();
+    var node = document.getElementById('lnfix');
+    node.parentNode.removeChild(node);
 }
 
 function resizeBox()
