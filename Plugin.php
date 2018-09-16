@@ -4,8 +4,7 @@
  * 
  * @package Prismjs
  * @author WiseClock
- * @version 1.0.7
- * @dependence 14.10.10
+ * @version 1.0.8
  * @link http://wiseclock.ca
  */
 class Prismjs_Plugin implements Typecho_Plugin_Interface
